@@ -1,0 +1,8 @@
+<div class="ui vertical pointing menu">
+    <div class="header item"> Account </div>
+    <a class="item {{ is_active_page('account.settings') }}" href="{{ reverse_url('account.settings') }}">Userinfo<i class="configure outline icon "></i></a>
+    <a class="item {{ is_active_page('account.avatar') }}" href="{{ reverse_url('account.avatar') }}">Avatar<i class="user outline icon "></i></a>
+    <div class="header item"> Inbox </div>
+    <a class="item {{ is_active_page('account.messages') }}" href="{{ reverse_url('account.messages') }}">Message<i class="mail outline icon"></i></a>
+    <a class="item {{ is_active_page('account.messages') }}" href="{{ reverse_url('account.messages') }}">Notify<i class="alarm outline icon"></i></a>
+</div>

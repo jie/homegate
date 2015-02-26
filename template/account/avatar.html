@@ -1,0 +1,143 @@
+{% extends 'page_base.html' %} {% block element %}
+<div class="sidebar">
+    {% include 'account/account_sidebar.html' %}
+</div>
+<div class="mainbar" id="drop_area">
+    <div class="drop_zone" style="float:left;">
+        <div class="ui medium image rounded stackable">
+            {% if current_user.user.avatar %}
+            <img id="photo" src="{{ current_user.user.get_avatar() }}" data-x1="{{ current_user.user.get_frame().x1 }}" data-y1="{{ current_user.user.get_frame().y1 }}" data-x2="{{ current_user.user.get_frame().x2 }}" data-y2="{{ current_user.user.get_frame().y2 }}" data-frame="300"> {% else %}
+            <img id="photo" src="{{ static_url('images/image.png') }}" data-frame="300"> {% endif %}
+            <div class="ui top right attached label teal">Drop image to upload</div>
+        </div>
+
+        <div id="upload_file_button" style="margin-top:10px"></div>
+    </div>
+
+    <div style="margin-left: 60px; float:left;display:inline-block">
+        <div id="preview" style="width: 100px; height: 100px; overflow: hidden;border-radius:3px;">
+            {% if current_user.user.avatar %}
+            <img src="{{ current_user.user.get_avatar() }}"> {% else %}
+            <img src="{{ static_url('images/image.png') }}"> {% endif %}
+        </div>
+        <div id="uploadCropImage" class="ui label" style="margin-top: 10px;">
+            <a><i class="upload icon"></i>Upload</a>
+        </div>
+    </div>
+</div>
+{% endblock%} {% block script %}
+<script type="text/javascript">
+$('#uploadCropImage').click(function() {
+
+    if ($('#photo').data('x1')) {
+        var box = {
+            'x1': $('#photo').data('x1'),
+            'x2': $('#photo').data('x2'),
+            'y1': $('#photo').data('y1'),
+            'y2': $('#photo').data('y2'),
+            'width': $('#photo').data('width'),
+            'height': $('#photo').data('height'),
+            'frame': $('#photo').data('frame')
+        };
+
+        $.ajax({
+            url: "{{ reverse_url('account.tiny_avatar') }}",
+            type: "POST",
+            data: box,
+            success: function(response) {
+                $('.responseMessage').removeClass('hidden').removeClass('negative').addClass('success').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('SUCCESS');
+            },
+            error: function(response) {
+                console.log(response);
+            }
+        });
+    }
+
+});
+
+function handleFileSelect(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var files = evt.dataTransfer.files; // FileList object.
+    var fileInfoStr = docSting(function() {
+        /*
+        <strong><%= filename %></strong> (<%= filetype %>) - <%= size %> MB
+        <div id="uploadFile" class="ui pointing left label">
+            <a><i class="upload icon"></i>Upload</a>
+        </div>
+        */
+    });
+    var fileInfoElem = _.template(fileInfoStr);
+    // files is a FileList of File objects. upload_file_button some properties.
+    var output = fileInfoElem({
+        filename: escape(files[0].name),
+        filetype: files[0].type || 'n/a',
+        size: (files[0].size / 1000000).toFixed(2)
+    });
+
+    document.getElementById('upload_file_button').innerHTML = output;
+    $("#drop_area").delegate("#uploadFile", "click", function() {
+        uploadFile(files[0]);
+    });
+}
+
+function uploadFile(file) {
+    $.ajax({
+        url: "{{ reverse_url('account.avatar') }}",
+        type: "POST",
+        data: file,
+        processData: false,
+        success: function(response) {
+            $('.responseMessage').removeClass('hidden').removeClass('negative').addClass('success').children('p').text(response.message);
+            $('.responseMessage').children('.header:first').text('SUCCESS');
+            $('#photo').attr('src', response.data.avatar);
+            $('#preview img').attr('src', response.data.avatar);
+        },
+        error: function(response) {
+            console.log(response);
+        }
+    });
+}
+
+function handleDragOver(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
+// Setup the dnd listeners.
+var dropZone = document.querySelectorAll(".drop_zone")[0];
+dropZone.addEventListener('dragover', handleDragOver, false);
+dropZone.addEventListener('drop', handleFileSelect, false);
+
+function errorHandler(evt) {
+    switch (evt.target.error.code) {
+        case evt.target.error.NOT_FOUND_ERR:
+            alert('File Not Found!');
+            break;
+        case evt.target.error.NOT_READABLE_ERR:
+            alert('File is not readable');
+            break;
+        case evt.target.error.ABORT_ERR:
+            console.log('abort');
+            break; // noop
+        default:
+            alert('An error occurred reading this file.');
+    };
+}
+
+function updateProgress(evt) {
+    // evt is an ProgressEvent.
+    if (evt.lengthComputable) {
+        var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+        // Increase the progress bar length.
+        if (percentLoaded < 100) {
+            $('#fileProgressBar').data('percent', percentLoaded + '%')
+            $('#fileProgressBar').children('label').text(percentLoaded + '%')
+        }
+    }
+}
+</script>
+{% endblock %}

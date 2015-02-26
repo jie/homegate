@@ -1,0 +1,238 @@
+{% extends 'page_base.html' %} {% block element %}
+<div class="sidebar">
+    {% include 'account/account_sidebar.html' %}
+</div>
+<div class="mainbar">
+    <div class="row">
+        <form class="ui warning form segment userinfo-form">
+            <div class="ui top left attached label teal">Userinfo</div>
+
+            <div class="field">
+                <input type="text" placeholder="Username" value="{{ current_user.user.username }}" disabled>
+            </div>
+            <div class="field">
+                <input type="text" name="nickname" placeholder="Nickname" value="{{ current_user.user.nickname }}">
+            </div>
+            <div class="field">
+                <textarea name="signature" placeholder="Signature">{{ current_user.user.signature }}</textarea>
+            </div>
+            <div class="inline fields">
+                <label for="fruit">{{ translate('Gender') }}:</label>
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="gender" value="U" {% if current_user.user.gender=='U' %}checked{% endif %}>
+                        <label>it's a secret</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="gender" value="F" {% if current_user.user.gender=='F' %}checked{% endif %}>
+                        <label><i class="female icon"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="gender" value="M" {% if current_user.user.gender=='M' %}checked{% endif %}>
+                        <label><i class="male icon"></i>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="ui submit button">Submit</div>
+        </form>
+
+    </div>
+
+
+    <form class="ui warning form segment password-form">
+        <div class="ui top left attached label teal">Password</div>
+        <div class="three fields">
+            <div class="field">
+                <input type="password" name="password" placeholder="Password">
+            </div>
+            <div class="field">
+                <input type="password" name="new_password" placeholder="New Password">
+            </div>
+            <div class="field">
+                <input type="password" name="repeat_password" placeholder="Repeat New Password">
+            </div>
+        </div>
+        <div class="ui submit button">Submit</div>
+    </form>
+    <div class="ui warning form segment">
+        <div class="ui top left attached label teal">Email</div>
+        <div class="ui fluid action input">
+            <input type="text" name="email" placeholder="Email" value="{{ current_user.user.email }}">
+            <div class="ui button" id="verifyEmail">Verify Email</div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock%} {% block script %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.ui.radio.checkbox').checkbox();
+
+    $.fn.api.settings.api = {
+        "account.send_verify_email": "{{ reverse_url('account.send_verify_email') }}",
+        "account.update_userinfo": "{{ reverse_url('account.update_userinfo') }}",
+        "account.change_password": "{{ reverse_url('account.change_password') }}",
+    };
+
+
+    $('#verifyEmail')
+        .api({
+            action: 'account.send_verify_email',
+            on: 'click',
+            method: 'POST',
+            beforeSend: function(settings) {
+                settings.data = {
+                    email: $('input[name=email]').val()
+                };
+                return settings;
+            },
+            onSuccess: function(response, element) {
+                if (response.success) {
+                    $('.responseMessage').removeClass('hidden').removeClass('negative').addClass('success').children('p').text(response.message);
+                    $('.responseMessage').children('.header:first').text('SUCCESS');
+                } else {
+                    $('.responseMessage').removeClass('hidden').removeClass('success').addClass('negative').children('p').text(response.message);
+                    $('.responseMessage').children('.header:first').text('ERROR');;
+                }
+            },
+            onError: function() {
+                console.log('onError');
+            },
+            onAbort: function() {
+                console.log('onAbort');
+            }
+        });
+
+    var userinfoFormValidator = {
+        nickname: {
+            identifier: 'nickname',
+            rules: [{
+                type: 'empty',
+                prompt: "{{ translate('Please enter a nickname') }}"
+            }, {
+                type: 'length[3]',
+                prompt: "{{ translate('Your nickname at least 3 length') }}"
+            }, {
+                type: 'maxLength[12]',
+                prompt: "{{ translate('Your nickanme length must smaller than 12') }}"
+            }]
+        },
+        signature: {
+            identifier: 'signature',
+            rules: [{
+                type: 'maxLength[120]',
+                prompt: "{{ translate('Your signature lenght could not exceed 120') }}"
+            }]
+        }
+    }
+
+    $('.userinfo-form').form(userinfoFormValidator).api({
+        action: 'account.update_userinfo',
+        method: 'POST',
+        serializeForm: true,
+        beforeSend: function(settings) {
+            return settings;
+        },
+        beforeXHR: function(xhr) {
+            //
+        },
+        onSuccess: function(response, element) {
+            if (response.success) {
+                $('.responseMessage').removeClass('hidden').removeClass('negative').addClass('success').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('SUCCESS');
+            } else {
+                $('.responseMessage').removeClass('hidden').removeClass('success').addClass('negative').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('ERROR');;
+            }
+        },
+        onError: function() {
+            console.log('onError');
+        },
+        onAbort: function() {
+            console.log('onAbort');
+        }
+    });
+
+    var passwordFormValidator = {
+        password: {
+            identifier: 'password',
+            rules: [{
+                type: 'empty',
+                prompt: "{{ translate('Please enter a password') }}"
+            }, {
+                type: 'length[6]',
+                prompt: "{{ translate('Your password at least 6 length') }}"
+            }, {
+                type: 'maxLength[12]',
+                prompt: "{{ translate('Your password length must smaller than 12') }}"
+            }]
+        },
+        new_password: {
+            identifier: 'new_password',
+            rules: [{
+                type: 'empty',
+                prompt: "{{ translate('Please enter a new_password') }}"
+            }, {
+                type: 'length[6]',
+                prompt: "{{ translate('Your new_password at least 6 length') }}"
+            }, {
+                type: 'maxLength[12]',
+                prompt: "{{ translate('Your new_password length must smaller than 12') }}"
+            }]
+        },
+        repeat_password: {
+            identifier: 'repeat_password',
+            rules: [{
+                type: 'empty',
+                prompt: "{{ translate('Please enter a repeat_password') }}"
+            }, {
+                type: 'length[6]',
+                prompt: "{{ translate('Your repeat_password at least 6 length') }}"
+            }, {
+                type: 'maxLength[12]',
+                prompt: "{{ translate('Your repeat_password length must smaller than 12') }}"
+            }]
+        },
+    }
+
+    $('.password-form').form(passwordFormValidator).api({
+        action: 'account.change_password',
+        method: 'POST',
+        serializeForm: true,
+        beforeSend: function(settings) {
+            if(settings.data.new_password != settings.data.repeat_password) {
+                console.log('password not same');
+            }
+            return settings;
+        },
+        beforeXHR: function(xhr) {
+            //
+        },
+        onSuccess: function(response, element) {
+            if (response.success) {
+                $('.responseMessage').removeClass('hidden').removeClass('negative').addClass('success').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('SUCCESS');
+            } else {
+                $('.responseMessage').removeClass('hidden').removeClass('success').addClass('negative').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('ERROR');;
+            }
+        },
+        onError: function() {
+            console.log('onError');
+        },
+        onAbort: function() {
+            console.log('onAbort');
+        }
+    });
+
+});
+</script>
+{% endblock %}

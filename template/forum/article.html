@@ -1,0 +1,139 @@
+{% extends 'single_base.html' %} {% block element %}
+<div class="row">
+    <div class="post">
+        <h2 class="title">复仇的死亡讯息</h2>
+        <div class="content">
+            <div class="info">
+                <div class="date">
+                    <i class="calendar icon"></i>2015-01-10 22:35:00
+                    <i class="calendar icon"></i>2015-01-10 22:35:00
+                </div>
+            </div>
+
+            <div class="post_content">
+                <p>欢迎使用FarBox在线Editor，这是第一篇文章。 </p>
+
+                <p>第一行是使用key: value形式的，表示对文章的特殊定义，比如Date: 2014-10-20 22:40或者Tags: Hello，当然，没有也没有关系。 </p>
+
+                <p>FarBox支持Markdown语法，当然，不知道Markdown是什么，直接写也没有关系。 </p>
+
+                <p>如果需要插入图片，直接拖入到编辑区域就可以了。 </p>
+
+                <p>如果你也在使用FarBox的桌面端Editor，那么在线Editor编辑的内容，一般会在10分钟内同步回你的电脑里。 </p>
+
+                <p>如果你还绑定了微信，呃，微信发过来的消息，会直接补充到当前文章内，当然，这是实时的!</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="ui basic button reply-button" style="float:right">
+        {{ translate('add reply') }}
+    </div>
+    <div style="clear:both"></div>
+</div>
+<div class="row" style="margin-top:30px;">
+    <div class="ui comments" style="margin-top: 30px">
+        <div class="comment">
+            <a class="avatar">
+                <img src="{{ static_url('images/avatar/jenny.jpg') }}">
+            </a>
+            <div class="content">
+                <a class="author">Matt</a>
+                <div class="metadata">
+                    <span class="date">Today at 5:42PM</span>
+                </div>
+                <div class="text">
+                    How artistic!
+                </div>
+                <div class="actions">
+                    <a class="reply">Reply</a>
+                </div>
+            </div>
+        </div>
+        <div class="comment">
+            <a class="avatar">
+                <img src="{{ static_url('images/avatar/jenny.jpg') }}">
+            </a>
+            <div class="content">
+                <a class="author">Elliot Fu</a>
+                <div class="metadata">
+                    <span class="date">Yesterday at 12:30AM</span>
+                </div>
+                <div class="text">
+                    <p>This has been very useful for my research. Thanks as well!</p>
+                </div>
+                <div class="actions">
+                    <a class="reply">Reply</a>
+                </div>
+            </div>
+            <div class="comments">
+                <div class="comment">
+                    <a class="avatar">
+                        <img src="{{ static_url('images/avatar/jenny.jpg') }}">
+                    </a>
+                    <div class="content">
+                        <a class="author">Jenny Hess</a>
+                        <div class="metadata">
+                            <span class="date">Just now</span>
+                        </div>
+                        <div class="text">
+                            Elliot you are always so right :)
+                        </div>
+                        <div class="actions">
+                            <a class="reply">Reply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="comment">
+            <a class="avatar">
+                <img src="{{ static_url('images/avatar/jenny.jpg') }}">
+            </a>
+            <div class="content">
+                <a class="author">Joe Henderson</a>
+                <div class="metadata">
+                    <span class="date">5 days ago</span>
+                </div>
+                <div class="text">
+                    Dude, this is awesome. Thanks so much
+                </div>
+                <div class="actions">
+                    <a class="reply">Reply</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="ui modal reply-modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Profile Picture
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label>{{ translate('Reply') }}</label>
+                    <textarea></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui tiny right labeled icon green button">
+                {{ translate('Submit') }}
+                <i class="save icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block script %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.reply-modal')
+        .modal('attach events', '.reply-button', 'show');
+})
+</script>
+{% endblock %}

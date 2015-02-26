@@ -1,0 +1,95 @@
+{% extends 'base.html' %} {% block content %}
+<div class="ui center page grid">
+    <div class="four wide column"></div>
+    <div class="eight wide column">
+        <div class="row" style="margin-top: 20%">
+            <div class="ui hidden message responseMessage"> <i class="close icon"></i>
+                <div class="header"></div>
+                <p></p>
+            </div>
+
+            <form class="ui form segment">
+                <div class="ui message error"></div>
+                <div class="field">
+                    <label>{{ translate('Username') }}</label>
+                    <input placeholder="{{ translate('Username') }}" type="text" name="username">
+                </div>
+                <div class="field">
+                    <label>{{ translate('Password') }}</label>
+                    <input placeholder="{{ translate('Password') }}" type="password" name="password">
+                </div>
+                <div class="ui green submit button submit-button"><i class="icon sign in"></i>{{ translate('Signin') }}</div>
+                <a class="ui negative button" href="{{ reverse_url('account.signup') }}">
+                    <i class="icon user"></i>{{ translate('Signup') }}
+                </a>
+                <a class="ui button" href="{{ reverse_url('account.forget_password') }}">
+                    {{ translate('forget pwd') }}
+                </a>
+            </form>
+        </div>
+    </div>
+    <div class="four wide column"></div>
+</div>
+{% endblock %} {% block script %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.message .close').on('click', function() {
+        $(this).closest('.message').addClass('hidden');
+    });
+
+    $.fn.api.settings.api = {
+        "account.signin": "{{ reverse_url('account.signin') }}",
+    };
+
+    var signupFormValidator = {
+        username: {
+            identifier: 'username',
+            rules: [{
+                type: 'empty',
+                prompt: "{{ translate('Please enter a username') }}"
+            }]
+        },
+        password: {
+            identifier: 'password',
+            rules: [{
+                type: 'empty',
+                prompt: "{{ translate('Please enter your password') }}"
+            }, {
+                type: 'length[6]',
+                prompt: "{{ translate('Your password must be at lease 6 characters') }}"
+            }]
+        }
+    }
+
+    $('.ui.form').form(signupFormValidator).api({
+        action: 'account.signin',
+        method: 'POST',
+        serializeForm: true,
+        beforeSend: function(settings) {
+            return settings;
+        },
+        beforeXHR: function(xhr) {
+            //
+        },
+        onSuccess: function(response, element) {
+            if (response.success) {
+                $('.responseMessage').removeClass('hidden').removeClass('negative').addClass('success').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('SUCCESS');
+                setTimeout(function() {
+                    window.location.href = "{{ reverse_url('homegate.index') }}";
+                }, 2000);
+            } else {
+                $('.responseMessage').removeClass('hidden').removeClass('success').addClass('negative').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('ERROR');;
+            }
+        },
+        onError: function() {
+            console.log('onError');
+        },
+        onAbort: function() {
+            console.log('onAbort');
+        }
+    });
+});
+</script>
+{% endblock %}

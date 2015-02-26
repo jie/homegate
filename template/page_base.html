@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+<div class="ui center page">
+    <div class="column" style="margin-top: 30px;">
+        {% include 'section/header.html' %}
+    </div>
+</div>
+<div class="ui center ui-container">
+    {% block element %}{% endblock %}
+</div>
+{% endblock %}

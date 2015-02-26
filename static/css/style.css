@@ -1,0 +1,151 @@
+body {
+    font: 400 16px / 1.62 'PT Sans', "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+    line-height: 1.9;
+    margin: 0 auto;
+    background: #fff;
+}
+a {
+    color: #444;
+}
+
+a:hover {
+    color: #000;
+}
+.clearfix {
+    clear: both;
+}
+.ui-container {
+    display: -webkit-flex;
+    display: flex;
+}
+.sidebar {
+    -webkit-flex: initial;
+    flex: initial;
+    width: 230px;
+    min-width: 230px;
+}
+.mainbar {
+    -webkit-flex: 1;
+    flex: 1;
+}
+.post .title {
+    color: #000;
+    font-size: 1.3em;
+    /*padding: 0.5em 0 0.5em 0;*/
+    margin: 1em 0 0.5em 0;
+    line-height: 1.2;
+}
+.post img {
+    max-width: 100%;
+}
+.post .content {
+    margin: 0 0 3em 0;
+    font-size: 1.1em;
+    color: #222;
+}
+.post .content .info .date, .post .content .info .reply {
+    margin-top: 0.1em;
+    padding: 0.5em 0;
+    color: #999;
+    font-size: 0.8em;
+}
+.post .content p img {
+    margin-left: -2em;
+}
+.post p {
+    margin-bottom: 0.5em;
+}
+.post a {
+    color: #111;
+    border-bottom: 1px solid #ccc;
+}
+.post a:hover {
+    border-bottom: 1px solid #888;
+}
+.post .toc {
+    line-height: 2.1;
+    border: 1px solid #eee;
+}
+.post .toc li ul {
+    margin: 0;
+    padding-top: 0;
+}
+.post blockquote {
+    color: #777;
+    display: block;
+    text-align: justify;
+    border-left: 4px solid #16B0FF;
+    margin: 1em 0 1em 1em;
+    padding-left: 0.5em;
+}
+.post blockquote p {
+    text-indent: 0;
+}
+.post pre {
+    border: none;
+    background: none;
+    border-top: 1px dashed #ddd;
+    border-bottom: 1px dashed #ddd;
+    margin: 1.2em -2px;
+    padding: 15px 20px;
+    font-size: 14px;
+    font-family: Menlo, monospace;
+    line-height: 2;
+    display: block;
+    overflow: auto;
+    max-width: 800px;
+}
+.post ul, .post ol {
+    margin-left: 1em;
+}
+.post h1, .post h2, .post h3, .post h4, .post h5, .post h6 {
+    margin: 1.5em 0 0.1em 0;
+}
+.post h1 {
+    font-size: 1.6em;
+}
+.post h2 {
+    font-size: 1.35em;
+}
+.post h3 {
+    font-size: 1.2em;
+}
+.post h4, .post h5, .post h6 {
+    font-size: 1.05em;
+}
+.new_post {
+    margin: 50px 0;
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid #eee;
+}
+.new_post a {
+    color: #000;
+    text-decoration: none;
+}
+.new_post h2 {
+    font-size: 2.2em;
+}
+.new_post h2 a:hover {
+    text-decoration: underline;
+}
+.new_post .summary {
+    display: block;
+}
+.new_post .summary:hover {
+    background: #f6f6f6;
+}
+.new_post .summary img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.avatar-square {
+    width: 32px;
+}
+
+.sub .avatar-square {
+    width: 24px;
+}
+
+

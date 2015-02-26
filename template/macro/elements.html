@@ -1,0 +1,17 @@
+{% macro input_field(field, label_size, div_size, read_only=false) %}
+  <div class="form-group {% if field.errors %}has-error{% endif %}">
+    {% if display_label %}
+      {{ field.label() }}
+    {% else %}
+      {{ field.label(class_=('sr-only')) }}
+    {% endif %}
+    <label for="{{ field.id }}" class="col-md-{{ label_size }} control-label">{{ field.label }}</label>
+    <div class="col-md-{{ div_size }}">
+        {{ field(class_='form-control', placeholder=field.description|default('', true)) }}
+        <span class="glyphicon form-control-feedback"></span>
+        {% if field.errors %}
+          <p class="help-block">{{ field.errors[0] }}</p>
+        {% endif %}
+    </div>
+  </div>
+{% endmacro %}

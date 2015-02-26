@@ -1,0 +1,31 @@
+<div class="ui secondary menu left floated">
+    {% if current_user.userinfo %}
+    <a class="item"><i class="mail green outline icon"></i>[3]</a>
+    <a class="item"><i class="comment green outline icon"></i></a> {% endif %}
+</div>
+
+<div class="ui secondary menu right floated" style="margin-bottom: 5px;">
+    <a class="item" href="{{ reverse_url('homegate.index') }}">{{ translate('Home') }}</a>
+    <a class="item active" href="{{ reverse_url('blog.index') }}">{{ translate('Blog') }}</a> {% if current_user.userinfo %}
+    <div class="ui buttons item">
+        <div class="ui floating dropdown icon">
+            {{ translate('My Account') }}<i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item" data-value="drop" href="{{ reverse_url('account.settings') }}">
+                    <i class="setting icon"></i>{{ translate('Settings') }}
+                </a>
+                <a class="item" href="{{ reverse_url('account.signout') }}" data-value="horizontal flip">
+                    <i class="sign out icon"></i>{{ translate('Signout') }}
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <a class="item" href="{{ reverse_url('account.signin') }}">{{ translate('Signin') }}</a> {% endif %}
+</div>
+<div class="ui divider clearing"></div>
+<div class="ui hidden message responseMessage"> <i class="close icon"></i>
+    <div class="header"></div>
+    <p></p>
+</div>
+<div class="ui clearing"></div>

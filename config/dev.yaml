@@ -1,0 +1,86 @@
+server:
+    debug: True
+
+interface:
+    template: template
+    static: static
+    locale: translate
+    cookie:
+        name: homegate
+        secret: gRloKf/QQe2w73CogcSDZLH1eBtbH0EfogK5cNAdmHE=
+
+mysql:
+    host: 127.0.0.1
+    port: 3306
+    user: homegate
+    passwd: homegate
+    db: homegate
+
+redis:
+    db: 10
+    host: 127.0.0.1
+    port: 6379
+
+qiniu:
+    bucket_name: homegate
+    bucket_url: http://7u2m4e.com1.z0.glb.clouddn.com/
+    access_key: hVmfaelLj_trajmTOXRa7oHFCMWQeS3yR0jykzAz
+    access_secret: V-rn1yy5ErZa67rQQVZebDg1phcf8EP55O1rK6PF
+
+mailgun:
+    postmaster: postmaster@mail.zhouyang.me
+    addr: https://api.mailgun.net/v2/mail.zhouyang.me/messages
+    auth_username: api
+    auth_password: key-1iotuou63m1vbgwfy94kmg-oelpkbja6
+    timeout: 30
+
+logger:
+    version: 1
+    disable_existing_loggers: False
+
+    handlers:
+        console:
+            class: logging.StreamHandler
+            formatter: generic
+            level: DEBUG
+            stream: ext://sys.stdout
+
+        tornado_file:
+            class: core.logkit.IHTimedRotatingFileHandler
+            formatter: generic
+            level: DEBUG
+            filename: logs/tornado.log
+            when: D
+
+        homegate_file:
+            class: core.logkit.IHTimedRotatingFileHandler
+            formatter: generic
+            level: DEBUG
+            filename: logs/homegate.log
+            when: D
+    root:
+        level: DEBUG
+        handlers:
+            - console
+            - homegate_file
+    loggers:
+        homegate:
+            level: DEBUG
+            qualname: homegate
+            handlers:
+                - homegate_file
+        tornado:
+            level: DEBUG
+            qualname: tornado
+            handlers: 
+                - tornado_file
+
+    formatters:
+        generic:
+            (): 'core.logkit.IHFormatter'
+            format: '[%(levelname)1.1s %(asctime)s %(trace)s] [%(name)s %(lineno)d] %(message)s'
+            datefmt: '%Y-%m-%d %H:%M:%S'
+
+        console_formatter:
+            (): 'core.logkit.ColoredConsoleFormatter'
+            format: '[%(levelname)1.1s %(asctime)s %(trace)s] [%(name)s %(lineno)d] %(message)s'
