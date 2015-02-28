@@ -45,35 +45,43 @@ logger:
             level: DEBUG
             stream: ext://sys.stdout
 
-        tornado_file:
-            class: core.logkit.IHTimedRotatingFileHandler
-            formatter: generic
-            level: DEBUG
-            filename: logs/tornado.log
-            when: D
+        # tornado_file:
+        #     class: core.logkit.IHTimedRotatingFileHandler
+        #     formatter: generic
+        #     level: DEBUG
+        #     filename: logs/tornado.log
+        #     when: D
 
-        homegate_file:
-            class: core.logkit.IHTimedRotatingFileHandler
-            formatter: generic
-            level: DEBUG
-            filename: logs/homegate.log
-            when: D
+        # homegate_file:
+        #     class: core.logkit.IHTimedRotatingFileHandler
+        #     formatter: generic
+        #     level: DEBUG
+        #     filename: logs/homegate.log
+        #     when: D
+
+        sentry_handler:
+            class: raven.handlers.logging.SentryHandler
+            dsn: http://a721e4c9af744100806e946cd8b80a30:6e7b6715a55748f789d0b7d6648a994d@127.0.0.1:9000/2
+
     root:
         level: DEBUG
         handlers:
-            - console
-            - homegate_file
+            # - console
+            # - homegate_file
+            - sentry_handler
+
     loggers:
         homegate:
             level: DEBUG
             qualname: homegate
             handlers:
-                - homegate_file
+                - sentry_handler
         tornado:
             level: DEBUG
             qualname: tornado
             handlers: 
-                - tornado_file
+                - sentry_handler
+
 
     formatters:
         generic:

@@ -2,3 +2,8 @@ python-user-agents
 tornado
 pony
 captcha
+pillow
+coreutils
+redis
+qiniu
+addict

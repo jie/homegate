@@ -48,5 +48,5 @@ class User(db.Entity, UserMixin):
 # class Article(db.Entity):
 #     pass
 
-sql_debug(True)
+sql_debug(False)
 db.generate_mapping()
