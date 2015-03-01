@@ -21,19 +21,21 @@
 
     <!-- <div class="ui thin vertical sidebar menu visible"> -->
     {% include 'section/sidebar.html' %}
-    <div class="ui grid centered">
-        {% block topbar %}{% endblock %}
-        <div class="ui divider clearing"></div>
-        <div class="ten wide column ui stackable">
-            <div class="ui hidden message responseMessage"> <i class="close icon"></i>
-                <div class="header"></div>
-                <p></p>
+    <div class="ui" style="padding:0;overflow:hidden">
+        <div class="ui grid centered" style="padding: 5px;">
+            {% block topbar %}{% endblock %}
+            <div class="ten wide column ui stackable">
+                <div class="ui hidden message responseMessage"> <i class="close icon"></i>
+                    <div class="header"></div>
+                    <p></p>
+                </div>
+                <div class="ui clearing"></div>
+                {% block content %}{% endblock %}
             </div>
-            <div class="ui clearing"></div>
-            {% block content %}{% endblock %}
         </div>
     </div>
-        {% block script %}{% endblock %}
+
+    {% block script %}{% endblock %}
 </body>
 
 </html>

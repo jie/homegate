@@ -1,36 +1,30 @@
 {% extends 'base.html' %} {% block content %}
-<div class="ui center page grid">
-    <div class="four wide column"></div>
-    <div class="eight wide column">
-        <div class="row" style="margin-top: 20%">
-            <div class="ui hidden message responseMessage"> <i class="close icon"></i>
-                <div class="header"></div>
-                <p></p>
+<div class="ui">
+
+    <div class="row" style="margin-top: 50px">
+        <form class="ui form segment">
+            <div class="ui message error"></div>
+            <div class="field">
+                <label>{{ translate('Nickname') }}</label>
+                <input placeholder="{{ translate('Nickname') }}" type="text" name="nickname">
             </div>
-            <form class="ui form segment">
-                <div class="ui message error"></div>
-                <div class="field">
-                    <label>{{ translate('Nickname') }}</label>
-                    <input placeholder="{{ translate('Nickname') }}" type="text" name="nickname">
-                </div>
-                <div class="field">
-                    <label>{{ translate('Email') }}</label>
-                    <input placeholder="{{ translate('Email') }}" type="text" name="email">
-                </div>
-                <div class="field">
-                    <label>{{ translate('Password') }}</label>
-                    <input placeholder="{{ translate('Password') }}" type="password" name="password">
-                </div>
-                <div class="field">
-                    <label>{{ translate('Repeat Password') }}</label>
-                    <input placeholder="{{ translate('Repeat Password') }}" type="password" name="repeat_password">
-                </div>
-                <div class="ui blue submit button"><i class="icon user"></i>{{ translate('Signup') }}</div>
-                <a class="ui negative button" href="{{ reverse_url('account.signin') }}">
-                    <i class="icon sign in"></i>{{ translate('Signin') }}
-                </a>
-            </form>
-        </div>
+            <div class="field">
+                <label>{{ translate('Email') }}</label>
+                <input placeholder="{{ translate('Email') }}" type="text" name="email">
+            </div>
+            <div class="field">
+                <label>{{ translate('Password') }}</label>
+                <input placeholder="{{ translate('Password') }}" type="password" name="password">
+            </div>
+            <div class="field">
+                <label>{{ translate('Repeat Password') }}</label>
+                <input placeholder="{{ translate('Repeat Password') }}" type="password" name="repeat_password">
+            </div>
+            <div class="ui blue submit button"><i class="icon user"></i>{{ translate('Signup') }}</div>
+            <a class="ui negative button" href="{{ reverse_url('account.signin') }}">
+                <i class="icon sign in"></i>{{ translate('Signin') }}
+            </a>
+        </form>
     </div>
     <div class="four wide column"></div>
 </div>
