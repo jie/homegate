@@ -38,4 +38,5 @@ def startup(config, port):
     server = tornado.httpserver.HTTPServer(application)
     tornado.locale.load_translations(locale_path)
     server.listen(int(port))
+    tornado.ioloop.IOLoop.configure('tornado.platform.asyncio.AsyncIOLoop')
     tornado.ioloop.IOLoop.instance().start()

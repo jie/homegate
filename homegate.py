@@ -26,12 +26,16 @@ def setup_logger(logger_config):
 
 def setup_redis(redis_config):
     from coreutils.redtool.pool import RedisPool
-    from coreutils.redtool.token import Token
     from core.session import SessionFactory
     redis_client = RedisPool.getClient(**redis_config)
     SessionFactory._redis_client = redis_client
+
+    from coreutils.redtool.token import Token
     Token.RedisPool = RedisPool
     Token.RedisConfig = redis_config
+
+    from core.cache import RedisCache
+    RedisCache.redis_client = redis_client
 
 
 def setup_qiniu(qiniu_config):

@@ -76,6 +76,10 @@ class SigninHandler(InterfaceBaseHandler):
         password = self.get_argument('password')
         _next = self.get_argument('next', None)
         user = User.GetByUsername(username=username)
+
+        if not user:
+            raise error.UserNotFound()
+
         sessionid, userinfo = user.signin(
             password, self.current_user.sessionid)
         self.session_factory.generate(sessionid, userinfo)

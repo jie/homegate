@@ -1,8 +1,9 @@
-{% extends 'page_base.html' %} {% block element %}
-<div class="sidebar">
-    {% include 'account/account_sidebar.html' %}
-</div>
-<div class="mainbar" id="drop_area">
+{% extends 'base.html' %} 
+{% block topbar %}
+{% include 'section/settingbar.html' %}
+{% endblock %}
+{% block content %}
+<div id="drop_area">
     <div class="drop_zone" style="float:left;">
         <div class="ui medium image rounded stackable">
             {% if current_user.user.avatar %}

@@ -1,0 +1,11 @@
+<div class="ui text menu stacked" style="padding-top: 10px; margin-bottom: -5px;">
+  <a class="item {{ is_active_page('account.settings') }}" href="{{ reverse_url('account.settings') }}">
+    <i class="configure outline icon"></i> Userinfo
+  </a>
+  <a class="item {{ is_active_page('account.avatar') }}" href="{{ reverse_url('account.avatar') }}">
+    <i class="user outline icon "></i> Avatar
+  </a>
+  <a class="item {{ is_active_page('account.messages') }}" href="{{ reverse_url('account.messages') }}" data-tab="second">
+    <i class="mail outline icon"></i> Message
+  </a>
+</div>

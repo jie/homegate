@@ -6,7 +6,8 @@
 import logging
 from tornado.gen import coroutine
 from core.modules.base_handler import InterfaceBaseHandler
-
+from core.database import News
+import pony.orm
 
 logger = logging.getLogger('homegate.homegate')
 
@@ -16,9 +17,11 @@ class IndexHandler(InterfaceBaseHandler):
     TemplatePath = 'index.html'
 
     @coroutine
+    @pony.orm.db_session
     def get(self):
-        print self.current_user
-        print self.current_user.sessionid
-        print self.current_user.userinfo
-        print type(self.current_user.userinfo)
-        self.render()
+        homepage = News.fetchHomepage()
+        self.render(
+            hacknews=homepage['hacknews'][:10], 
+            jobs=homepage['jobs'][:10],
+            games=homepage['games'][:10]
+        )

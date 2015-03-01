@@ -18,10 +18,22 @@
 </head>
 
 <body id="home">
-    <div class="container" style="width: 950px; margin:0 auto;">
-        {% block content %}{% endblock %}
+
+    <!-- <div class="ui thin vertical sidebar menu visible"> -->
+    {% include 'section/sidebar.html' %}
+    <div class="ui grid centered">
+        {% block topbar %}{% endblock %}
+        <div class="ui divider clearing"></div>
+        <div class="ten wide column ui stackable">
+            <div class="ui hidden message responseMessage"> <i class="close icon"></i>
+                <div class="header"></div>
+                <p></p>
+            </div>
+            <div class="ui clearing"></div>
+            {% block content %}{% endblock %}
+        </div>
     </div>
-    {% block script %}{% endblock %}
+        {% block script %}{% endblock %}
 </body>
 
 </html>

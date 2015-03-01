@@ -6,6 +6,7 @@ from datetime import datetime
 from pony.orm import *
 from core.config import Config
 from core.models.user import UserMixin
+from core.models.news import NewsMixin
 
 config = Config()
 
@@ -47,6 +48,16 @@ class User(db.Entity, UserMixin):
 
 # class Article(db.Entity):
 #     pass
+
+class News(db.Entity, NewsMixin):
+    identity = PrimaryKey(int)
+    title = Required(str, 128)
+    link = Required(str, 256)
+    description = Optional(str, 256)
+    content = Optional(str, nullable=True)
+    author = Optional(str, nullable=True)
+    site = Required(str, 36, nullable=True)
+    create_at = Optional(datetime, nullable=True)
 
 sql_debug(False)
 db.generate_mapping()

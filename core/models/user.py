@@ -12,12 +12,9 @@ from core import error
 from util.qiniu_util import QiniuUtil
 from pony.orm import ObjectNotFound, flush, commit, db_session
 from addict import Dict
+from mixin import BaseModelMixin
 
 logger = logging.getLogger('homegate.models.user')
-
-
-class BaseModelMixin(object):
-    pass
 
 
 class UserMixin(BaseModelMixin):

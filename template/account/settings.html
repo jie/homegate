@@ -1,68 +1,64 @@
-{% extends 'page_base.html' %} {% block element %}
-<div class="sidebar">
-    {% include 'account/account_sidebar.html' %}
-</div>
-<div class="mainbar">
-    <div class="row">
-        <form class="ui warning form segment userinfo-form">
-            <div class="ui top left attached label teal">Userinfo</div>
+{% extends 'base.html' %} 
 
-            <div class="field">
-                <input type="text" placeholder="Username" value="{{ current_user.user.username }}" disabled>
-            </div>
-            <div class="field">
-                <input type="text" name="nickname" placeholder="Nickname" value="{{ current_user.user.nickname }}">
-            </div>
-            <div class="field">
-                <textarea name="signature" placeholder="Signature">{{ current_user.user.signature }}</textarea>
-            </div>
-            <div class="inline fields">
-                <label for="fruit">{{ translate('Gender') }}:</label>
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="gender" value="U" {% if current_user.user.gender=='U' %}checked{% endif %}>
-                        <label>it's a secret</label>
-                    </div>
+{% block topbar %}
+{% include 'section/settingbar.html' %}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <form class="ui warning form userinfo-form">
+        <div class="field input ui">
+            <input type="text" placeholder="Username" value="{{ current_user.user.username }}" disabled>
+        </div>
+        <div class="field input ui">
+            <input type="text" name="nickname" placeholder="Nickname" value="{{ current_user.user.nickname }}">
+        </div>
+        <div class="field input ui">
+            <textarea name="signature" placeholder="Signature">{{ current_user.user.signature }}</textarea>
+        </div>
+        <div class="inline fields">
+            <label for="fruit">{{ translate('Gender') }}:</label>
+            <div class="field input ui">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="gender" value="U" {% if current_user.user.gender=='U' %}checked{% endif %}>
+                    <label>it's a secret</label>
                 </div>
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="gender" value="F" {% if current_user.user.gender=='F' %}checked{% endif %}>
-                        <label><i class="female icon"></i>
-                        </label>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="gender" value="M" {% if current_user.user.gender=='M' %}checked{% endif %}>
-                        <label><i class="male icon"></i>
-                        </label>
-                    </div>
-                </div>
-
             </div>
-            <div class="ui submit button">Submit</div>
-        </form>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="gender" value="F" {% if current_user.user.gender=='F' %}checked{% endif %}>
+                    <label><i class="female icon"></i>
+                    </label>
+                </div>
+            </div>
+            <div class="field input ui">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="gender" value="M" {% if current_user.user.gender=='M' %}checked{% endif %}>
+                    <label><i class="male icon"></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="ui submit button">Submit</div>
+    </form>
 
-    </div>
+    <div class="ui divider clearing"></div>
 
-
-    <form class="ui warning form segment password-form">
-        <div class="ui top left attached label teal">Password</div>
+    <form class="ui warning form password-form">
         <div class="three fields">
-            <div class="field">
+            <div class="field input ui">
                 <input type="password" name="password" placeholder="Password">
             </div>
-            <div class="field">
+            <div class="field input ui">
                 <input type="password" name="new_password" placeholder="New Password">
             </div>
-            <div class="field">
+            <div class="field input ui">
                 <input type="password" name="repeat_password" placeholder="Repeat New Password">
             </div>
         </div>
         <div class="ui submit button">Submit</div>
     </form>
-    <div class="ui warning form segment">
-        <div class="ui top left attached label teal">Email</div>
+    <div class="ui divider clearing"></div>
+    <div class="ui warning form">
         <div class="ui fluid action input">
             <input type="text" name="email" placeholder="Email" value="{{ current_user.user.email }}">
             <div class="ui button" id="verifyEmail">Verify Email</div>
@@ -208,7 +204,7 @@ $(document).ready(function() {
         method: 'POST',
         serializeForm: true,
         beforeSend: function(settings) {
-            if(settings.data.new_password != settings.data.repeat_password) {
+            if (settings.data.new_password != settings.data.repeat_password) {
                 console.log('password not same');
             }
             return settings;

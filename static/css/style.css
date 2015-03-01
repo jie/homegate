@@ -3,35 +3,23 @@ body {
     line-height: 1.9;
     margin: 0 auto;
     background: #fff;
+    min-width: 320px;
+    text-rendering: optimizeLegibility;
 }
 a {
     color: #444;
 }
-
 a:hover {
     color: #000;
 }
 .clearfix {
     clear: both;
 }
-.ui-container {
-    display: -webkit-flex;
-    display: flex;
-}
-.sidebar {
-    -webkit-flex: initial;
-    flex: initial;
-    width: 230px;
-    min-width: 230px;
-}
-.mainbar {
-    -webkit-flex: 1;
-    flex: 1;
-}
 .post .title {
     color: #000;
     font-size: 1.3em;
     /*padding: 0.5em 0 0.5em 0;*/
+    
     margin: 1em 0 0.5em 0;
     line-height: 1.2;
 }
@@ -139,13 +127,18 @@ a:hover {
     max-width: 100%;
     margin: 0 auto;
 }
-
 .avatar-square {
     width: 32px;
 }
-
 .sub .avatar-square {
     width: 24px;
 }
 
+/* Mobile Only */
+@media only screen and (max-width: 1000px) {
+  .ui.stackable.grid > .column {
+    clear: both;
+    width: 100%;
+  }
 
+}

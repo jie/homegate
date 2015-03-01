@@ -19,6 +19,7 @@ $(document).ready(function() {
         $(this).closest('.message').addClass('hidden');
     });
 
+    // $('.sidebar').sidebar('show');
 })
 
 function previewPortrait(img, selection) {
