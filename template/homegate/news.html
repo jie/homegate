@@ -1,0 +1,113 @@
+{% extends 'base.html' %} {% block topbar %} {% include 'section/topbar.html' %} {% endblock %} {% block content %}
+<div class="ui ">
+    <div class="ui list very relaxed">
+        {{ macro_article(item) }}
+    </div>
+    {% if current_user.userinfo %}
+    <div class="ui horizontal divider">
+        <a href="#" class="reply_button ui button mini" style="padding: 5px 10px;"><i class="reply icon icon"></i>{{ translate('Reply') }}</a>
+    </div>
+    <div class="ui reply_form segment">
+        <form class="ui form">
+            <input type="hidden" name="news_id" value="{{ item.id }}">
+            <div class="field">
+                <textarea name="markdown"></textarea>
+            </div>
+            <div class="ui submit button"><i class="save icon"></i>Submit</div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+<div class="ui divider hidden"></div>
+<div class="ui comments loading segment basic" style="max-width:100%; margin: 10px auto 30px 0;"></div>
+{% endblock %} {% block script %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.reply_button').click(function(){
+        $('.reply_form').toggle();
+    });
+    $.fn.api.settings.api = {
+        "homegate.reply": "{{ reverse_url('homegate.reply') }}",
+        "homegate.fetch_replies": "{{ reverse_url('homegate.fetch_replies') }}"
+    };
+
+    function render_replies(replies) {
+        $('.ui.comments').html(replies.join(''));
+    }
+
+    function render_append_replies(replies) {
+        $('.ui.comments').prepend(replies.join(''));
+        $('.reply_form').toggle();
+    }
+
+    var replyFormValidator = {
+        content: {
+            identifier: 'content',
+            rules: [{
+                type: 'empty',
+                prompt: "{{ translate('Please enter a content') }}"
+            }, {
+                type: 'maxLength[512]',
+                prompt: "{{ translate('Content max length is 512 characters') }}"
+            }]
+        },
+    }
+
+    $('.reply_form form').form(replyFormValidator).api({
+        action: 'homegate.reply',
+        method: 'POST',
+        serializeForm: true,
+        beforeSend: function(settings) {
+            $('.ui.comments').addClass('loading');
+            $('textarea[name=markdown]').val('');
+            return settings;
+        },
+        beforeXHR: function(xhr) {
+            //
+        },
+        onSuccess: function(response, element) {
+            if (response.success) {
+                $('.responseMessage').removeClass('hidden').removeClass('negative').addClass('success').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('SUCCESS');
+                render_append_replies(response.data.replies);
+            } else {
+                $('.responseMessage').removeClass('hidden').removeClass('success').addClass('negative').children('p').text(response.message);
+                $('.responseMessage').children('.header:first').text('ERROR');;
+            }
+        },
+        onComplete: function() {
+            setTimeout(function() {
+                $('.ui.comments').removeClass('loading');
+            }, 2000);
+        }
+    });
+
+    $.api({
+        action: 'homegate.fetch_replies',
+        method: 'POST',
+        serializeForm: true,
+        beforeSend: function(settings) {
+            settings.data = {news_id: "{{ item.id }}" };
+            $('.ui.comments').addClass('loading');
+            return settings;
+        },
+        onSuccess: function(response, element) {
+            if (response.success) {
+                render_replies(response.data.replies);
+            }
+        },
+        onError: function() {
+            console.log('onError');
+        },
+        onAbort: function() {
+            console.log('onAbort');
+        },
+        onComplete: function() {
+            setTimeout(function() {
+                $('.ui.comments').removeClass('loading');
+            }, 2000);
+        }
+    })
+})
+</script>
+{% endblock %}

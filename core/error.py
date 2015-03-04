@@ -127,3 +127,27 @@ class ChecktModifyUserinfoDateError(LogicError):
         super(ChecktModifyUserinfoDateError, self).__init__(**kwargs)
         self.code = -2004
         self.msg = 'User data can only be modified once a week at most'
+
+
+class ExceedPasswordCheckTimes(LogicError):
+
+    def __init__(self, **kwargs):
+        super(ExceedPasswordCheckTimes, self).__init__(**kwargs)
+        self.code = -2005
+        self.msg = 'Exceed check password times, go forget password reset it'
+
+
+class UserNoTinyAvatarError(LogicError):
+
+    def __init__(self, **kwargs):
+        super(UserNoTinyAvatarError, self).__init__(**kwargs)
+        self.code = -2006
+        self.msg = 'You must upload your avatar first'
+
+
+class ReplyRestrictError(LogicError):
+
+    def __init__(self, **kwargs):
+        super(ReplyRestrictError, self).__init__(**kwargs)
+        self.code = -2007
+        self.msg = 'Your reply send too fast, please wait a 60 sec'

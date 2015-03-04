@@ -29,14 +29,12 @@ def cached(cache_key=None):
             redis_cache = RedisCache()
             key = redis_cache.get_key(cache_key)
             cached_data = redis_cache.redis_client.get(key)
-            print cached_data
             if not cached_data:
                 data = method(*args, **kwargs)
                 redis_cache.redis_client.set(key, pickle.dumps(data))
                 redis_cache.redis_client.expire(key, 300)
             else:
                 data = pickle.loads(cached_data)
-                print data
             return data
 
         return wrapper

@@ -63,7 +63,9 @@ class SignupHandler(InterfaceBaseHandler):
 
 class SigninHandler(InterfaceBaseHandler):
 
+    TokenName = 'homegate-signin'
     TemplatePath = 'signin.html'
+    PasswordCheckMaxTimes = 5
 
     @coroutine
     def get(self):
@@ -75,15 +77,39 @@ class SigninHandler(InterfaceBaseHandler):
         username = self.get_argument('username')
         password = self.get_argument('password')
         _next = self.get_argument('next', None)
+
+        password_check_count = self.check_signin_token(username)
         user = User.GetByUsername(username=username)
 
         if not user:
             raise error.UserNotFound()
 
         sessionid, userinfo = user.signin(
-            password, self.current_user.sessionid)
+            password,
+            self.current_user.sessionid,
+            password_check_count=password_check_count,
+            callback=self.set_signin_token
+        )
+
         self.session_factory.generate(sessionid, userinfo)
         self.genReturn({'next': _next or self.reverse_url('homegate.index')})
+
+    def check_signin_token(self, username):
+        maping = Token().check(self.TokenName, username)
+        count = maping.get('count', 0)
+        count = int(count)
+        if count > self.PasswordCheckMaxTimes:
+            raise error.ExceedPasswordCheckTimes()
+        return count
+
+    def set_signin_token(self, username, count):
+        token = Token().hset(
+            self.TokenName,
+            username,
+            maping={'count': count + 1},
+            expire_sec=3600 * 24
+        )
+        return token
 
 
 class SignoutHandler(InterfaceBaseHandler):
@@ -91,7 +117,7 @@ class SignoutHandler(InterfaceBaseHandler):
     @coroutine
     @authenticated
     def get(self):
-        next = self.get_argument('next', self.reverse_url('blog.index'))
+        next = self.get_argument('next', self.reverse_url('homegate.index'))
         self.clear_cookie(self.cookies_name)
         self.session_factory.expire(self.current_user.sessionid, 1)
         self.redirect(next)
@@ -236,8 +262,8 @@ class UpdateUserinfoHandler(InterfaceBaseHandler):
     @coroutine
     @db_session
     def post_operate(self):
-        # if not self.current_user.user.check_modify_date():
-        #     raise error.ChecktModifyUserinfoDateError()
+        if not self.current_user.user.check_modify_date():
+            raise error.ChecktModifyUserinfoDateError()
         nickname = self.get_argument('nickname')
         signature = self.get_argument('signature')
         gender = self.get_argument('gender')
@@ -297,6 +323,7 @@ class ResetPasswordHandler(InterfaceBaseHandler):
             repeat_password
         )
         Token().delete(self.TokenName, token)
+        Token().delete(self.SigninHandler.TokenName, user.username)
         self.genReturn({'message': self.translate('user password reseted')})
 
 
@@ -325,4 +352,5 @@ class ForgetPasswordHandler(InterfaceBaseHandler):
         subject = self.translate('Homegate Reset Password Request')
         payloads = email_message.get_reset_password_email(subject, token)
         yield self.mailgun.fetch('POST', payloads)
-        self.genReturn({'message': self.translate('reset password email send')})
+        self.genReturn(
+            {'message': self.translate('reset password email send')})

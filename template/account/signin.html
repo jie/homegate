@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
-<div class="ui">
-    <div class="row" style="margin-top: 50px;">
+<div class="ui grid centered">
+    <div class="eight wide column sign_box">
         <form class="ui form segment">
             <div class="ui message error"></div>
             <div class="field">
@@ -11,13 +11,13 @@
                 <label>{{ translate('Password') }}</label>
                 <input placeholder="{{ translate('Password') }}" type="password" name="password">
             </div>
-            <div class="ui green submit button submit-button"><i class="icon sign in"></i>{{ translate('Signin') }}</div>
-            <a class="ui negative button" href="{{ reverse_url('account.signup') }}">
+            <div class="ui submit button submit-button"><i class="icon sign in"></i>{{ translate('Signin') }}</div>
+            <a class="ui basic button" href="{{ reverse_url('account.signup') }}">
                 <i class="icon user"></i>{{ translate('Signup') }}
             </a>
-            <a class="ui button" href="{{ reverse_url('account.forget_password') }}">
-                    {{ translate('forget pwd') }}
-                </a>
+            <a class="ui button basic" href="{{ reverse_url('account.forget_password') }}">
+                {{ translate('Forget Password') }}
+            </a>
         </form>
     </div>
 </div>

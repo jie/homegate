@@ -12,7 +12,6 @@ from urllib import urlencode
 from uuid import uuid4
 from tornado import locale
 from tornado.util import ObjectDict
-from jinja2.exceptions import TemplateNotFound
 from tornado.web import RequestHandler, HTTPError
 from tornado.gen import coroutine, Return
 from core.helper import TraceAbleObject
@@ -33,8 +32,11 @@ class InterfaceBaseHandler(RequestHandler, TraceAbleObject):
     def genReturn(self, response={}):
         raise Return(response)
 
-    def is_active_page(self, reverse_name):
+    def is_active_page(self, reverse_name, second_name=None):
         return 'active' if reverse_name == self.ReverseName else ''
+
+    def is_active_showcase(self, second_name, showcase):
+        return 'active' if second_name == showcase else ''
 
     def initialize(self, *args, **kwargs):
         self.cookies_name = self.config.interface['cookie']['name']
@@ -77,13 +79,12 @@ class InterfaceBaseHandler(RequestHandler, TraceAbleObject):
             translate=self.translate,
             reverse_url=self.reverse_url,
             current_user=self.current_user,
-            is_active_page=self.is_active_page
+            is_active_page=self.is_active_page,
+            is_active_showcase=self.is_active_showcase,
+            config=self.config
         )
 
-        try:
-            template = self.env.get_template(template)
-        except TemplateNotFound:
-            raise HTTPError(404)
+        template = self.env.get_template(template)
         self.env.globals['static_url'] = self.static_url
         self.write(template.render(kwargs))
 

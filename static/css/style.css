@@ -5,6 +5,7 @@ body {
     background: #fff;
     min-width: 320px;
     text-rendering: optimizeLegibility;
+    padding: 1em;
 }
 a {
     color: #444;
@@ -45,10 +46,10 @@ a:hover {
 }
 .post a {
     color: #111;
-    border-bottom: 1px solid #ccc;
+    /*border-bottom: 1px solid #ccc;*/
 }
 .post a:hover {
-    border-bottom: 1px solid #888;
+    /*border-bottom: 1px solid #888;*/
 }
 .post .toc {
     line-height: 2.1;
@@ -133,12 +134,52 @@ a:hover {
 .sub .avatar-square {
     width: 24px;
 }
-
-/* Mobile Only */
-@media only screen and (max-width: 1000px) {
-  .ui.stackable.grid > .column {
-    clear: both;
-    width: 100%;
-  }
-
+.remove_sidebar {
+    margin: auto;
 }
+.content_layout {
+    width: 90%;
+}
+.sign_box {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.thin_wrapper {
+    margin: auto;
+    width: 60%;
+}
+.reply_form {
+    display: none;
+}
+/*.pushable {
+    background: #fff!important;
+}*/
+/*.ui.visible.left.sidebar .pusher {
+  margin-left: 85px;
+}
+*/
+/* Mobile Only */
+
+@media only screen and (max-width: 1000px) {
+    .ui.stackable.grid > .column {
+        clear: both;
+        width: 100%;
+    }
+    .thin_wrapper {
+        margin: auto;
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 480px) {
+    .content_layout {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+}
+/*@media only screen and (max-width: @computerBreakpoint) {
+    html.ios {
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+}*/

@@ -1,0 +1,157 @@
+{% macro index_column(title, showcase, items) %}
+<div class="column">
+    <h5 class="ui top attached segment">
+        <a href="{{ reverse_url('homegate.showcase', showcase) }}">
+        {{ title }}
+        </a>
+    </h5> 
+    {% for item in items[showcase][:10] %}
+    <div class="ui attached segment {% if loop.last %}stacked tall{% endif %}">
+        <h5 class="ui header">
+            <a href="{{ reverse_url('homegate.news', item.showcase, item.id) }}">
+                {{ item.title }}
+            </a>
+        </h5> 
+
+        {% if item.description %}
+        <p>{{ item.description }}</p>
+        {% endif %}
+
+
+        {% if item.tags %}
+        <div class="ui labels mini">
+            {% for tag in item.tags %}
+            <a class="ui mini label" style="padding: 3px 5px;">
+                {{ tag }}
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <a class="ui image label">
+          <i class="{{ config['homepage'][item.site]['author_icon'] }}"></i>
+          {{ item.site }}
+          <div class="detail">{{ item.create_at }}</div>
+        </a>
+        {% if loop.last %}
+        <div style="clear:both;"></div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+<div class="ui divider hidden"></div>
+{% endmacro %}
+
+{% macro index_showcase(showcase, item) %}
+<div class="item">
+    <div style="float:left; width:40px; text-align:center"><i class="large {{ config['homepage'][item.site]['author_icon'] }}"></i> <span style="font-size: 10px;">{{ showcase }}</span></div>
+    <div class="content" style="float: left; margin-left: 10px;">
+        <a class="header" href="{{ reverse_url('homegate.news', item.showcase, item.id) }}">{{ item.title }}</a>
+        <div style="margin-top:5px">
+        {% if item.description %}
+        <p>{{ item.description }}</p>
+        {% else %}
+        <p>{{ item.summary }}</p>
+        {% endif %}
+        </div>
+        <div class="detail" style="margin-top: 5px; font-size: 10px;"><i class="wait icon"></i>{{ item.create_at }}</div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+{% endmacro%}
+
+
+{% macro macro_article(item) %}
+<div class="post">
+    <h2 class="title">
+        <a href="{{ item.link }}">{{ item.title }}</a>
+    </h2>
+    <div class="content">
+        <div class="info">
+            <div class="date">
+                <i class="calendar icon"></i>{{ item.create_at }}
+            </div>
+        </div>
+
+        <div class="post_content">
+            {{ item.content or item.description }}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro macro_pagination(pagination, reverse_name, params, payload, size="sm") %}
+{% if pagination %}
+<div class="ui pagination borderless menu pagination-menu">
+    <a class="item">
+        <i class="left arrow icon"></i>
+    </a>
+    {% for page in pagination.iter_pages() %} 
+    {% if page != None %}
+    {% set params_list = [] %}
+    {% do params_list.extend(params) %}
+    {% do params_list.append(page) %}
+    <a href="{{ reverse_url(reverse_name, *params_list) }}{% if payload %}?{{ payload }}{% endif %}" 
+    class="item {% if page == pagination.page %}active{% endif %}">{{ page }}</a>
+    {% else %}
+    <li readonly><a href="#"><i class="fa fa-arrows-h"></i></a></li>
+    {% endif %}
+    {% endfor %}
+    <a class="item">
+        <i class="icon right arrow"></i>
+    </a>
+</div>
+{% endif %}
+{% endmacro %}
+
+
+{% macro macro_reply(item) %}
+<div class="comment">
+    <a class="avatar">
+        <img src="{{ item.user.get_avatar() }}">
+    </a>
+    <div class="content">
+        <a class="author">{{ item.user.nickname }}</a>
+        <div class="metadata">
+            <span class="date">{{ item.create_at }}</span>
+        </div>
+        <div class="text">
+            {{ item.content }}
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro macro_sidebar(userinfo) %}
+<div class="ui sidebar labeled icon left inline vertical menu siteSidebar uncover">
+    {% if userinfo %}
+    <a class="item avatar" href="{{ reverse_url('account.settings') }}">
+        {% if userinfo.tiny_avatar %}
+        <img class="ui avatar image icon" src="{{ current_user.user.get_avatar() }}"> {{ userinfo.nickname }}
+        {% else %}
+        <div style="margin-bottom: 10px;">
+            <i class="icon user big" style="color:#ddd"></i>
+        </div> {{ userinfo.nickname }}
+        {% endif %}
+    </a>
+    {% endif %}
+    <a class="item" href="{{ reverse_url('homegate.index') }}">
+        <i class="home icon"></i>
+    </a>
+    <a class="item">
+        <i class="block layout icon"></i>
+    </a>
+    {% if userinfo %}
+    <a class="item" href="{{ reverse_url('account.settings') }}">
+        <i class="settings icon"></i>
+    </a>
+    <a class="item" href="{{ reverse_url('account.signout') }}">
+        <i class="sign out icon"></i>
+    </a>
+    {% else %}
+    <a class="item" href="{{ reverse_url('account.signin') }}">
+        <i class="sign in icon"></i>
+    </a>
+    {% endif %}
+</div>
+{% endmacro %}

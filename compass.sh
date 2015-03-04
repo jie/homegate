@@ -1,0 +1,2 @@
+cat static/semantic.min.css static/css/style.css static/css/imgareaselect-default.css | cssmin > static/css/_style.css
+uglifyjs --mangle -- static/js/jquery.min.js static/js/underscore.js static/js/jquery.serialize-object.min.js static/js/jquery.imgareaselect.dev.js static/semantic.min.js static/js/jquery.imgareaselect.dev.js static/js/main.js > static/js/_main.js

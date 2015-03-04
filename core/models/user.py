@@ -62,6 +62,7 @@ class UserMixin(BaseModelMixin):
     def signin(self, password, sessionid=None, **kwargs):
         input_password = self.generate_password(password, self.create_at)
         if self.password != input_password:
+            kwargs['callback'](self.username, kwargs['password_check_count'])
             raise error.VerifyPasswordError(username=self.username)
 
         self.login_at = datetime.now()

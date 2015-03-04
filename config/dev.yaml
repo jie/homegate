@@ -34,6 +34,39 @@ mailgun:
     auth_password: key-1iotuou63m1vbgwfy94kmg-oelpkbja6
     timeout: 30
 
+homepage:
+    hacknews:
+        author_icon: hacker news icon
+    tgbus:
+        author_icon: game icon
+    github:
+        author_icon: github alternate icon
+    qq:
+        author_icon: qq icon
+    weibo:
+        author_icon: weibo icon
+    google:
+        author_icon: google icon
+    reddit:
+        author_icon: reddit icon
+    pinterest:
+        author_icon: pinterest icon
+    apple:
+        author_icon: apple icon
+    bitcoin:
+        author_icon: bitcoin icon
+    flickr:
+        author_icon: flickr icon
+    facebook:
+        author_icon: facebook icon
+    instagram:
+        author_icon: instagram icon
+    twitch:
+        author_icon: twitch icon
+    youtube:
+        author_icon: youtube icon
+
+
 logger:
     version: 1
     disable_existing_loggers: False

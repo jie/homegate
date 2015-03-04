@@ -1,0 +1,19 @@
+{% macro macro_reply(item) %}
+<div class="comment">
+    <a class="avatar">
+        <img src="{{ item.user.get_avatar() }}">
+    </a>
+    <div class="content">
+        <a class="author">{{ item.user.nickname }}</a>
+        <div class="metadata">
+            <span class="date">{{ item.create_at }}</span>
+        </div>
+        <div class="text">
+            How artistic!
+        </div>
+<!--         <div class="actions">
+            <a class="reply">Reply</a>
+        </div> -->
+    </div>
+</div>
+{% endmacro %}

@@ -7,6 +7,7 @@ from pony.orm import *
 from core.config import Config
 from core.models.user import UserMixin
 from core.models.news import NewsMixin
+from core.models.reply import ReplyMixin
 
 config = Config()
 
@@ -40,6 +41,7 @@ class User(db.Entity, UserMixin):
     signature = Optional(str, nullable=True)
     gender = Optional(str, nullable=True)
     userinfo_modified = Optional(datetime, nullable=True)
+    replies = Set("Reply")
 
 
 # class Inbox(db.Entity):
@@ -50,14 +52,26 @@ class User(db.Entity, UserMixin):
 #     pass
 
 class News(db.Entity, NewsMixin):
-    identity = PrimaryKey(int)
+    identity = Required(str, 36)
     title = Required(str, 128)
     link = Required(str, 256)
     description = Optional(str, 256)
     content = Optional(str, nullable=True)
     author = Optional(str, nullable=True)
     site = Required(str, 36, nullable=True)
+    tag = Optional(str, 64, nullable=True)
+    category = Optional(str, 32, nullable=True)
+    showcase = Optional(str, 32, nullable=True)
     create_at = Optional(datetime, nullable=True)
+    replies = Set("Reply")
+
+
+class Reply(db.Entity, ReplyMixin):
+    news = Required(News, column="news_id")
+    content = Required(str)
+    # user_id = Required(int)
+    create_at = Optional(datetime, nullable=True)
+    user = Optional(User, column='user_id')
 
 sql_debug(False)
 db.generate_mapping()

@@ -1,12 +1,9 @@
-<div class="ui text menu" style="padding-top:5px; margin-bottom: -5px;">
-  <a class="item" href="#">
-    <i class="desktop icon"></i> Hacknews
-  </a>
-  <a class="item" href="#">
-    <i class="game icon"></i> Game
-  </a>
-  <a class="item" href="#">
+<a class="item {{ is_active_showcase(showcase, 'news') }}" href="{{ reverse_url('homegate.showcase', 'news') }}">
+    <i class="desktop icon"></i> News
+</a>
+<a class="item {{ is_active_showcase(showcase, 'acgn') }}" href="{{ reverse_url('homegate.showcase', 'acgn') }}">
+    <i class="game icon"></i> Acgn
+</a>
+<a class="item {{ is_active_showcase(showcase, 'coding') }}" href="{{ reverse_url('homegate.showcase', 'coding') }}">
     <i class="code icon"></i> Coding
-  </a>
-</div>
-<div class="ui divider clearing"></div>
+</a>

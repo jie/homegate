@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block topbar %} {% include 'section/topbar.html' %} {% endblock %} {% block content %}
+<div class="ui">
+    <div class="ui list very relaxed">
+    {% for item in pagination.items %}
+    {{ index_showcase(showcase, item) }}
+    {% endfor %}
+    </div>
+</div>
+<div class="ui divider clearing"></div>
+<div class="row">
+    <div class=" aligned column">
+        {{ macro_pagination(pagination, 'homegate.showcase_page', [showcase,], payload=None, size="sm") }}
+    </div>
+</div>
+{% endblock %}

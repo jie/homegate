@@ -16,7 +16,8 @@ class CoreApplication(tornado.web.Application):
         self._jinja_env = Environment(
             loader=FileSystemLoader(kwargs['template_path']),
             auto_reload=kwargs.get('debug', True),
-            autoescape=False
+            autoescape=False,
+            extensions=['jinja2.ext.do']
         )
 
         self.session_factory = SessionFactory()

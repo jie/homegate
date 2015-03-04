@@ -1,66 +1,15 @@
 {% extends 'base.html' %} {% block topbar %} {% include 'section/topbar.html' %} {% endblock %} {% block content %}
 <div class="ui three column grid stackable stackcolumn">
     <div class="column">
-
-        <div class="column">
-            <h5 class="ui top attached segment">Hacknews</h5>
-            {% for item in hacknews %}
-            <div class="ui attached segment {% if loop.last %}stacked tall{% endif %}">
-                <h5 class="ui header">
-                    <a href="{{ item.link }}">
-                        {{ item.title }}
-                    </a>
-                </h5>
-                <a class="ui image label floated">
-                    <img src="{{ static_url('images/avatar/jenny.jpg') }}"> zhouyang
-                </a>
-                {% if loop.last %}<div style="clear:both;"></div>{% endif %}
-            </div>
-            {% endfor %}
-        </div>
-        <div class="ui divider hidden"></div>
+        {{ index_column('News', 'news', items) }}
         <div class="ui divider hidden"></div>
     </div>
     <div class="column">
-
-        <div class="column">
-            <h5 class="ui top attached segment">Games</h5>
-            {% for item in games %}
-            <div class="ui attached segment {% if loop.last %}stacked tall{% endif %}">
-                <h5 class="ui header">
-                    <a href="{{ item.link }}">
-                        {{ item.title }}
-                    </a>
-                </h5>
-                <a class="ui image label floated">
-                    <img src="{{ static_url('images/avatar/jenny.jpg') }}"> zhouyang
-                </a>
-                {% if loop.last %}<div style="clear:both;"></div>{% endif %}
-            </div>
-            {% endfor %}
-        </div>
-        <div class="ui divider hidden"></div>
+        {{ index_column('Acgn', 'acgn', items) }}
         <div class="ui divider hidden"></div>
     </div>
     <div class="column">
-
-        <div class="column">
-            <h5 class="ui top attached segment">Hacknews</h5>
-            {% for item in hacknews %}
-            <div class="ui attached segment {% if loop.last %}stacked tall{% endif %}">
-                <h5 class="ui header">
-                    <a href="{{ item.link }}">
-                        {{ item.title }}
-                    </a>
-                </h5>
-                <a class="ui image label floated">
-                    <img src="{{ static_url('images/avatar/jenny.jpg') }}"> zhouyang
-                </a>
-                {% if loop.last %}<div style="clear:both;"></div>{% endif %}
-            </div>
-            {% endfor %}
-        </div>
-        <div class="ui divider hidden"></div>
+        {{ index_column('Coding', 'coding', items) }}
         <div class="ui divider hidden"></div>
     </div>
 </div>

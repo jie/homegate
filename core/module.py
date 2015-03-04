@@ -18,14 +18,16 @@ class ModuleMeta(type):
                 handlerCls = handler['handler']
 
                 if handler['url']:
-                    handlerUrl = r"/%s/%s" % (attrs['module_name'], handler['url'])
+                    handlerUrl = r"/%s/%s" % (
+                        attrs['module_name'], handler['url'])
                 else:
                     handlerUrl = r"/$"
-                if getattr(handlerCls, 'TemplatePath'):
+                if getattr(handlerCls, 'TemplatePath') and len(handlerCls.TemplatePath.split('/')) == 1:
                     handlerCls.TemplatePath = os.path.join(
                         attrs['template_prefix'],
                         handlerCls.TemplatePath
                     )
+
                 handlerCls.ModuleName = attrs['module_name']
                 handlerCls.PageName = handler['name']
                 handlerCls.ReverseName = handlerName
