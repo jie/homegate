@@ -44,8 +44,11 @@
 
 {% macro index_showcase(showcase, item) %}
 <div class="item">
-    <div style="float:left; width:40px; text-align:center"><i class="large {{ config['homepage'][item.site]['author_icon'] }}"></i> <span style="font-size: 10px;">{{ showcase }}</span></div>
-    <div class="content" style="float: left; margin-left: 10px;">
+    <div class="ui avatar image" style="text-align: center;">
+        <i class="large {{ config['homepage'][item.site]['author_icon'] }}"></i> 
+        <span style="font-size: 10px;">{{ showcase }}</span>
+    </div>
+    <div class="content">
         <a class="header" href="{{ reverse_url('homegate.news', item.showcase, item.id) }}">{{ item.title }}</a>
         <div style="margin-top:5px">
         {% if item.description %}
@@ -58,6 +61,7 @@
     </div>
     <div style="clear:both;"></div>
 </div>
+
 {% endmacro%}
 
 
